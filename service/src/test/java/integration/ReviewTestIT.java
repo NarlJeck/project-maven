@@ -16,36 +16,37 @@ import org.junit.jupiter.api.Test;
 import util.HibernateTestUtil;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ReviewTestIT {
-    static SessionFactory sessionFactory;
-    Session session = null;
+
+    private static SessionFactory sessionFactory;
+    private Session session = null;
 
     @BeforeAll
-    public static void setUp() {
-
+    static void setUp() {
         sessionFactory = HibernateTestUtil.buildSessionFactory();
     }
 
     @AfterAll
-    public static void tearDown() {
+    static void tearDown() {
         if (sessionFactory != null) {
             sessionFactory.close();
         }
     }
 
     @BeforeEach
-    public void beforeStartTest() {
+    void beforeStart() {
         session = sessionFactory.openSession();
         session.beginTransaction();
     }
 
     @AfterEach
-    public void afterEndingTest() {
+    void afterEnding() {
         if (session != null) {
             session.getTransaction().rollback();
             session.close();
@@ -77,8 +78,9 @@ public class ReviewTestIT {
         review1.setRating(1);
         session.update(review1);
         session.flush();
-        Review updatedReview = session.get(Review.class, review1.getId());
+        session.clear();
 
+        Review updatedReview = session.get(Review.class, review1.getId());
         assertNotNull(updatedReview);
         assertEquals(1, updatedReview.getRating());
     }
@@ -89,8 +91,9 @@ public class ReviewTestIT {
 
         session.delete(review1);
         session.flush();
-        Review deletedReview = session.get(Review.class, review1.getId());
+        session.clear();
 
+        Review deletedReview = session.get(Review.class, review1.getId());
         assertNull(deletedReview);
     }
 
@@ -106,6 +109,7 @@ public class ReviewTestIT {
         session.flush();
         session.persist(review1);
         session.flush();
+        session.clear();
         return review1;
     }
 
@@ -115,7 +119,7 @@ public class ReviewTestIT {
                 .car(getCar1())
                 .reviewText("This is nice car")
                 .rating(5)
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().toInstant(ZoneOffset.UTC))
                 .build();
     }
 

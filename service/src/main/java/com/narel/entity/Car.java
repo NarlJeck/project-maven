@@ -20,7 +20,6 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Data
 @EqualsAndHashCode(exclude = {"reviews", "orderRentals"})
 @ToString(exclude = {"reviews", "orderRentals", "image"})

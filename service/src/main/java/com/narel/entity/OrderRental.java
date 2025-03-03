@@ -18,7 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @EqualsAndHashCode
@@ -42,9 +42,9 @@ public class OrderRental {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    private LocalDateTime rentalStartTime;
+    private Instant rentalStartTime;
 
-    private LocalDateTime rentalEndTime;
+    private Instant rentalEndTime;
 
     private Double totalRentalCost;
 
