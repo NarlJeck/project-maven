@@ -2,7 +2,6 @@ package integration;
 
 import com.narel.entity.Car;
 import com.narel.entity.OrderRental;
-import com.narel.entity.Review;
 import com.narel.entity.User;
 import com.narel.enums.CarStatus;
 import com.narel.enums.OrderStatus;
@@ -18,36 +17,37 @@ import org.junit.jupiter.api.Test;
 import util.HibernateTestUtil;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OrderRentalTestIT {
-    static SessionFactory sessionFactory;
-    Session session = null;
+
+    private static SessionFactory sessionFactory;
+    private Session session = null;
 
     @BeforeAll
-    public static void setUp() {
-
+    static void setUp() {
         sessionFactory = HibernateTestUtil.buildSessionFactory();
     }
 
     @AfterAll
-    public static void tearDown() {
+    static void tearDown() {
         if (sessionFactory != null) {
             sessionFactory.close();
         }
     }
 
     @BeforeEach
-    public void beforeStartTest() {
+    void beforeStart() {
         session = sessionFactory.openSession();
         session.beginTransaction();
     }
 
     @AfterEach
-    public void afterEndingTest() {
+    void afterEnding() {
         if (session != null) {
             session.getTransaction().rollback();
             session.close();
@@ -75,17 +75,18 @@ public class OrderRentalTestIT {
     @Test
     void checkUpdateReviewSuccessfully() {
         OrderRental orderInSession = getOrderInSession();
-
         orderInSession.setStatus(OrderStatus.CANCELLED);
-        orderInSession.setRentalEndTime(LocalDateTime.of(2024, 12, 26, 10, 15));
+        orderInSession.setRentalEndTime(LocalDateTime.of(2024, 12, 26, 10, 15).toInstant(ZoneOffset.UTC));
         orderInSession.setTotalRentalCost(getCar1().getRentalPrice());
         session.update(orderInSession);
         session.flush();
+        session.clear();
+
         OrderRental updateOrderRental = session.get(OrderRental.class, orderInSession.getId());
 
         assertNotNull(updateOrderRental);
         assertEquals(OrderStatus.CANCELLED, updateOrderRental.getStatus());
-        assertEquals(LocalDateTime.of(2024, 12, 26, 10, 15), updateOrderRental.getRentalEndTime());
+        assertEquals(LocalDateTime.of(2024, 12, 26, 10, 15).toInstant(ZoneOffset.UTC), updateOrderRental.getRentalEndTime());
         assertEquals(getCar1().getRentalPrice(), updateOrderRental.getTotalRentalCost());
     }
 
@@ -95,8 +96,9 @@ public class OrderRentalTestIT {
 
         session.delete(orderRental);
         session.flush();
-        OrderRental deletedOrder = session.get(OrderRental.class, orderRental.getId());
+        session.clear();
 
+        OrderRental deletedOrder = session.get(OrderRental.class, orderRental.getId());
         assertNull(deletedOrder);
     }
 
@@ -112,6 +114,7 @@ public class OrderRentalTestIT {
         session.flush();
         session.persist(orderRental);
         session.flush();
+        session.clear();
         return orderRental;
     }
 
@@ -119,7 +122,7 @@ public class OrderRentalTestIT {
         return OrderRental.builder()
                 .user(getUser1())
                 .car(getCar1())
-                .rentalStartTime(LocalDateTime.of(2024, 12, 25, 10, 15))
+                .rentalStartTime(LocalDateTime.of(2024, 12, 25, 10, 15).toInstant(ZoneOffset.UTC))
                 .rentalEndTime(null)
                 .totalRentalCost(null)
                 .status(OrderStatus.CONFIRMED)

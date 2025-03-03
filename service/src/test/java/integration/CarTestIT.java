@@ -17,30 +17,30 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CarTestIT {
-    static SessionFactory sessionFactory;
-    Session session = null;
+
+    private static SessionFactory sessionFactory;
+    private Session session = null;
 
     @BeforeAll
-    public static void setUp() {
-
+    static void setUp() {
         sessionFactory = HibernateTestUtil.buildSessionFactory();
     }
 
     @AfterAll
-    public static void tearDown() {
+    static void tearDown() {
         if (sessionFactory != null) {
             sessionFactory.close();
         }
     }
 
     @BeforeEach
-    public void beforeStartTest() {
+    void beforeStart() {
         session = sessionFactory.openSession();
         session.beginTransaction();
     }
 
     @AfterEach
-    public void afterEndingTest() {
+    void afterEnding() {
         if (session != null) {
             session.getTransaction().rollback();
             session.close();
@@ -53,6 +53,7 @@ public class CarTestIT {
 
         session.persist(car1);
         session.flush();
+        session.clear();
 
         assertNotNull(car1.getId());
     }
@@ -62,6 +63,7 @@ public class CarTestIT {
         Car car1 = getCar1();
         session.save(car1);
         session.flush();
+        session.clear();
 
         Car founderCar = session.get(Car.class, car1.getId());
 
@@ -75,12 +77,14 @@ public class CarTestIT {
         Car car1 = getCar1();
         session.save(car1);
         session.flush();
-
+        session.clear();
         car1.setRentalPrice(70.0);
-        session.update(car1);
-        session.flush();
-        Car updatedCar = session.get(Car.class, car1.getId());
 
+        session.update(car1);
+
+        session.flush();
+        session.clear();
+        Car updatedCar = session.get(Car.class, car1.getId());
         assertNotNull(updatedCar);
         assertEquals(70.0, updatedCar.getRentalPrice());
     }
@@ -90,16 +94,18 @@ public class CarTestIT {
         Car car1 = getCar1();
         session.save(car1);
         session.flush();
+        session.clear();
 
         session.delete(car1);
         session.flush();
+        session.clear();
         Car deletedCar = session.get(Car.class, car1.getId());
 
         assertNull(deletedCar);
     }
 
     private static Car getCar1() {
-        Car car = Car.builder()
+        return Car.builder()
                 .year(2020)
                 .image("https://assets.avtocod.ru/storage/images/articles-2022/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu-0-min.jpg")
                 .rentalPrice(50.0)
@@ -112,6 +118,5 @@ public class CarTestIT {
                 .fuelType("Diesel")
                 .engineCapacity(3.0)
                 .build();
-        return car;
     }
 }

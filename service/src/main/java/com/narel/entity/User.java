@@ -19,7 +19,6 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Data
 @EqualsAndHashCode(exclude = {"reviews", "orderRentals", "password"})
 @ToString(exclude = {"reviews", "orderRentals", "password"})
@@ -70,5 +69,4 @@ public class User {
         orderRentals.add(orderRental);
         orderRental.setUser(this);
     }
-
 }

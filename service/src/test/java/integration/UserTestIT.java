@@ -17,30 +17,29 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class UserTestIT {
 
-    static SessionFactory sessionFactory;
-    Session session = null;
+    private static SessionFactory sessionFactory;
+    private Session session = null;
 
     @BeforeAll
-    public static void setUp() {
-
+    static void setUp() {
         sessionFactory = HibernateTestUtil.buildSessionFactory();
     }
 
     @AfterAll
-    public static void tearDown() {
+    static void tearDown() {
         if (sessionFactory != null) {
             sessionFactory.close();
         }
     }
 
     @BeforeEach
-    public void beforeStartTest() {
+    void beforeStart() {
         session = sessionFactory.openSession();
         session.beginTransaction();
     }
 
     @AfterEach
-    public void afterEndingTest() {
+    void afterEnding() {
         if (session != null) {
             session.getTransaction().rollback();
             session.close();
@@ -53,6 +52,7 @@ public class UserTestIT {
 
         session.persist(user);
         session.flush();
+        session.clear();
 
         assertNotNull(user.getId());
     }
@@ -62,6 +62,7 @@ public class UserTestIT {
         User user1 = getUser1();
         session.save(user1);
         session.flush();
+        session.clear();
 
         User founderUser = session.get(User.class, user1.getId());
 
@@ -75,12 +76,14 @@ public class UserTestIT {
         User user1 = getUser1();
         session.save(user1);
         session.flush();
-
+        session.clear();
         user1.setResidentialAddress("Grodno");
+
         session.update(user1);
         session.flush();
-        User updateUser = session.get(User.class, user1.getId());
+        session.clear();
 
+        User updateUser = session.get(User.class, user1.getId());
         assertNotNull(updateUser);
         assertEquals("Grodno", updateUser.getResidentialAddress());
     }
@@ -90,16 +93,18 @@ public class UserTestIT {
         User user1 = getUser1();
         session.save(user1);
         session.flush();
+        session.clear();
 
         session.delete(user1);
         session.flush();
-        User deletedUser = session.get(User.class, user1.getId());
+        session.clear();
 
+        User deletedUser = session.get(User.class, user1.getId());
         assertNull(deletedUser);
     }
 
     private static User getUser1() {
-        User user = User.builder()
+        return User.builder()
                 .fullName("Jon")
                 .phoneNumber(299)
                 .email("@gmail")
@@ -110,6 +115,5 @@ public class UserTestIT {
                 .bankCard("343432")
                 .password("4gd3O04@gK")
                 .build();
-        return user;
     }
 }
