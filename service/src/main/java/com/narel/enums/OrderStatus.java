@@ -1,6 +1,6 @@
 package com.narel.enums;
 
-public enum Status {
+public enum OrderStatus {
     CONFIRMED,
     PENDING,
     CANCELLED,

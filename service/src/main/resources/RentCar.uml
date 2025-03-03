@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.car</OriginalElement>
+  <nodes>
+    <node x="-117.0" y="-164.0">5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.car</node>
+    <node x="151.0" y="-140.0">5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.users</node>
+    <node x="-121.0" y="288.0">5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.review</node>
+    <node x="107.5" y="276.0">5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.order_rental</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.order_rental" target="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.car" relationship="REFERENCES">
+      <point x="-54.25" y="-104.0" />
+      <point x="161.75" y="240.0" />
+      <point x="-4.0" y="240.0" />
+      <point x="0.0" y="164.0" />
+    </edge>
+    <edge source="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.review" target="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.users" relationship="REFERENCES">
+      <point x="48.5" y="-92.0" />
+      <point x="24.5" y="220.0" />
+      <point x="276.0" y="220.0" />
+      <point x="0.0" y="140.0" />
+    </edge>
+    <edge source="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.order_rental" target="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.users" relationship="REFERENCES">
+      <point x="54.25" y="-104.0" />
+      <point x="270.25" y="220.0" />
+      <point x="276.0" y="220.0" />
+      <point x="0.0" y="140.0" />
+    </edge>
+    <edge source="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.review" target="5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.car" relationship="REFERENCES">
+      <point x="-48.5" y="-92.0" />
+      <point x="-72.5" y="240.0" />
+      <point x="-4.0" y="240.0" />
+      <point x="0.0" y="164.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0104790419161678" showDependencies="false" x="149.99999999999997" y="170.0" />
+  <SelectedNodes>
+    <node>5d722681-f90c-4664-bdd5-a1c8b37fe35a.TABLE:postgres.public.users</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
