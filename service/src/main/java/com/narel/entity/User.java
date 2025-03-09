@@ -1,6 +1,14 @@
 package com.narel.entity;
 
 import com.narel.enums.Role;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,20 +16,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"reviews", "orderRentals", "password"})
-@ToString(exclude = {"reviews", "orderRentals", "password"})
+@EqualsAndHashCode(exclude = {"reviews", "orderRentals", "password","id"})
+@ToString(exclude = {"reviews", "orderRentals", "password","id"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

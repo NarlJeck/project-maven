@@ -18,9 +18,9 @@ import util.HibernateTestUtil;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ReviewTestIT {
 
@@ -76,7 +76,7 @@ public class ReviewTestIT {
         Review review1 = getReviewInSession();
 
         review1.setRating(1);
-        session.update(review1);
+        session.merge(review1);
         session.flush();
         session.clear();
 
@@ -89,7 +89,7 @@ public class ReviewTestIT {
     void checkDeleteReviewSuccessfully() {
         Review review1 = getReviewInSession();
 
-        session.delete(review1);
+        session.remove(review1);
         session.flush();
         session.clear();
 
