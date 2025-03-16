@@ -74,12 +74,12 @@ public class ReviewTestIT {
     @Test
     void checkUpdateReviewSuccessfully() {
         Review review1 = getReviewInSession();
-
         review1.setRating(1);
+
         session.merge(review1);
+
         session.flush();
         session.clear();
-
         Review updatedReview = session.get(Review.class, review1.getId());
         assertNotNull(updatedReview);
         assertEquals(1, updatedReview.getRating());
@@ -90,9 +90,9 @@ public class ReviewTestIT {
         Review review1 = getReviewInSession();
 
         session.remove(review1);
+
         session.flush();
         session.clear();
-
         Review deletedReview = session.get(Review.class, review1.getId());
         assertNull(deletedReview);
     }
