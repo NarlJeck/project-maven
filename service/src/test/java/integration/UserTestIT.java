@@ -60,7 +60,7 @@ public class UserTestIT {
     @Test
     void checkReadUserSuccessfully() {
         User user1 = getUser1();
-        session.save(user1);
+        session.persist(user1);
         session.flush();
         session.clear();
 
@@ -74,12 +74,12 @@ public class UserTestIT {
     @Test
     void checkUpdateUserSuccessfully() {
         User user1 = getUser1();
-        session.save(user1);
+        session.persist(user1);
         session.flush();
         session.clear();
         user1.setResidentialAddress("Grodno");
 
-        session.update(user1);
+        session.merge(user1);
         session.flush();
         session.clear();
 
@@ -91,11 +91,11 @@ public class UserTestIT {
     @Test
     void checkDeleteUserSuccessfully() {
         User user1 = getUser1();
-        session.save(user1);
+        session.persist(user1);
         session.flush();
         session.clear();
 
-        session.delete(user1);
+        session.remove(user1);
         session.flush();
         session.clear();
 

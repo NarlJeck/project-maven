@@ -19,8 +19,8 @@ import util.HibernateTestUtil;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OrderRentalTestIT {
@@ -78,7 +78,7 @@ public class OrderRentalTestIT {
         orderInSession.setStatus(OrderStatus.CANCELLED);
         orderInSession.setRentalEndTime(LocalDateTime.of(2024, 12, 26, 10, 15).toInstant(ZoneOffset.UTC));
         orderInSession.setTotalRentalCost(getCar1().getRentalPrice());
-        session.update(orderInSession);
+        session.merge(orderInSession);
         session.flush();
         session.clear();
 
@@ -94,7 +94,7 @@ public class OrderRentalTestIT {
     void checkDeleteReviewSuccessfully() {
         OrderRental orderRental = getOrderInSession();
 
-        session.delete(orderRental);
+        session.remove(orderRental);
         session.flush();
         session.clear();
 
