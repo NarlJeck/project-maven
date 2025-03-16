@@ -1,13 +1,16 @@
 package integration;
 
-import com.narel.dao.CarDao;
 import com.narel.dto.CarFilter;
+import com.narel.dto.CarReviewsFilter;
 import com.narel.entity.Car;
 import com.narel.entity.Review;
 import com.narel.entity.User;
 import com.narel.enums.CarStatus;
 import com.narel.enums.Role;
 import com.narel.enums.Type;
+import com.narel.repository.CarRepository;
+import com.narel.repository.ReviewRepository;
+import com.narel.repository.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -17,22 +20,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.HibernateTestUtil;
 
+import java.lang.reflect.Proxy;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CarTestIT {
 
-    private final static CarDao carDao = CarDao.getInstance();
-
     private static SessionFactory sessionFactory;
-    private Session session = null;
+    private Session session = sessionFactory.getCurrentSession();
+    private CarRepository carRepository = new CarRepository(session);
+    private UserRepository userRepository = new UserRepository(session);
+    private ReviewRepository reviewRepository = new ReviewRepository(session);
 
     @BeforeAll
     static void setUp() {
@@ -48,9 +53,9 @@ public class CarTestIT {
 
     @BeforeEach
     void beforeStart() {
-        session = sessionFactory.openSession();
+        var session = (Session) Proxy.newProxyInstance(SessionFactory.class.getClassLoader(), new Class[]{Session.class},
+                (proxy, method, args1) -> method.invoke(sessionFactory.getCurrentSession(), args1));
         session.beginTransaction();
-
     }
 
     @AfterEach
@@ -62,13 +67,87 @@ public class CarTestIT {
     }
 
     @Test
+    void saveCarSuccessfully() {
+        Car car1 = getCar1();
+
+        Car saveCar= carRepository.save(car1);
+
+        session.flush();
+        session.clear();
+
+        assertNotNull(saveCar);
+    }
+
+    @Test
+    void findCarIdSuccessfully() {
+        Car car1 = getCar1();
+        carRepository.save(car1);
+        session.flush();
+        session.clear();
+
+        Optional<Car> foundedCar = carRepository.findById(car1.getId());
+
+        assertNotNull(foundedCar);
+        assertEquals(car1.getRegistrationNumber(), foundedCar.get().getRegistrationNumber());
+    }
+
+    @Test
+    void deleteCarSuccessfully() {
+        Car car1 = getCar1();
+        carRepository.save(car1);
+        session.flush();
+        session.clear();
+
+        carRepository.delete(car1);
+
+        session.flush();
+        session.clear();
+        Optional<Car> deletedCar = carRepository.findById(car1.getId());
+        assertEquals(deletedCar.isEmpty(), true);
+    }
+
+    @Test
+    void updateCarSuccessfully() {
+        Car car1 = getCar1();
+        carRepository.save(car1);
+        session.flush();
+        session.clear();
+        car1.setYear(2019);
+
+        carRepository.update(car1);
+
+        session.flush();
+        session.clear();
+        Optional<Car> updatedCar = carRepository.findById(car1.getId());
+        assertEquals(2019, updatedCar.get().getYear());
+
+    }
+
+    @Test
+    void findAllCarsSuccessfully() {
+        Car car1 = getCar1();
+        Car car2 = getCar2();
+        carRepository.save(car1);
+        carRepository.save(car2);
+        session.flush();
+        session.clear();
+
+        List<Car> actualListAllCar = carRepository.findAll();
+
+        assertThat(actualListAllCar)
+                .hasSize(2)
+                .contains(car1, car2);
+
+    }
+
+    @Test
     void findBrandOrYearOrFuelType() {
         Car car1 = getCar1();
         Car car2 = getCar2();
         Car car3 = getCar3();
-        session.persist(car1);
-        session.persist(car2);
-        session.persist(car3);
+        carRepository.save(car1);
+        carRepository.save(car2);
+        carRepository.save(car3);
         session.flush();
         session.clear();
         CarFilter carFilter = CarFilter.builder()
@@ -79,7 +158,7 @@ public class CarTestIT {
         var expectedCarModel3 = session.get(Car.class, car3.getId()).getModel();
         List<String> expectedCarModel = Arrays.asList(expectedCarModel1, expectedCarModel3);
 
-        var actualCarModel = carDao.findCarModelByFilter(session, carFilter);
+        var actualCarModel = carRepository.findCarModelByFilter(session, carFilter);
 
         assertThat(actualCarModel)
                 .hasSize(2)
@@ -101,79 +180,26 @@ public class CarTestIT {
         car1.addReviews(review1);
         car1.addReviews(review2);
         car3.addReviews(review3);
-        session.persist(user1);
+        userRepository.save(user1);
         session.flush();
-        session.persist(car1);
-        session.persist(car2);
-        session.persist(car3);
-        session.persist(review1);
-        session.persist(review2);
-        session.persist(review3);
+        carRepository.save(car1);
+        carRepository.save(car2);
+        carRepository.save(car3);
+        reviewRepository.save(review1);
+        reviewRepository.save(review2);
+        reviewRepository.save(review3);
         session.flush();
         session.clear();
+        CarReviewsFilter carReviewsFilter = CarReviewsFilter.builder()
+                .brand("BMW")
+                .model("X7")
+                .build();
 
-        var actualCarModel = carDao.findReviewsByBrandAndModelCar(session, "BMW", "X7");
+        var actualCarModel = carRepository.findReviewsByBrandAndModelCar(session, carReviewsFilter);
 
         assertThat(actualCarModel)
                 .hasSize(3)
                 .containsAnyOf(review1.getReviewText(), review2.getReviewText());
-    }
-
-    @Test
-    void checkCreateCarSuccessfully() {
-        Car car1 = getCar1();
-
-        session.persist(car1);
-        session.flush();
-        session.clear();
-
-        assertNotNull(car1.getId());
-    }
-
-    @Test
-    void checkReadCarSuccessfully() {
-        Car car1 = getCar1();
-        session.persist(car1);
-        session.flush();
-        session.clear();
-
-        Car founderCar = session.get(Car.class, car1.getId());
-
-        assertNotNull(founderCar);
-        assertEquals(car1.getRegistrationNumber(), founderCar.getRegistrationNumber());
-        assertEquals(car1.getImage(), founderCar.getImage());
-    }
-
-    @Test
-    void checkUpdateCarSuccessfully() {
-        Car car1 = getCar1();
-        session.persist(car1);
-        session.flush();
-        session.clear();
-        car1.setRentalPrice(70.0);
-
-        session.merge(car1);
-
-        session.flush();
-        session.clear();
-        Car updatedCar = session.get(Car.class, car1.getId());
-        assertNotNull(updatedCar);
-        assertEquals(70.0, updatedCar.getRentalPrice());
-    }
-
-    @Test
-    void checkDeleteCarSuccessfully() {
-        Car car1 = getCar1();
-        session.persist(car1);
-        session.flush();
-        session.clear();
-
-        session.remove(car1);
-        session.flush();
-        session.clear();
-        Car deletedCar = session.get(Car.class, car1.getId());
-
-        assertNull(deletedCar);
     }
 
     private static Car getCar1() {
@@ -267,6 +293,5 @@ public class CarTestIT {
                 .password("4gd3O04@gK")
                 .build();
     }
-
 
 }
