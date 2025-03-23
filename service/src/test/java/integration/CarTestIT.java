@@ -34,10 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CarTestIT {
 
     private static SessionFactory sessionFactory;
-    private Session session = sessionFactory.getCurrentSession();
-    private CarRepository carRepository = new CarRepository(session);
-    private UserRepository userRepository = new UserRepository(session);
-    private ReviewRepository reviewRepository = new ReviewRepository(session);
+    private Session session;
+    CarRepository carRepository;
+    UserRepository userRepository;
+    ReviewRepository reviewRepository;
 
     @BeforeAll
     static void setUp() {
@@ -56,13 +56,16 @@ public class CarTestIT {
         var session = (Session) Proxy.newProxyInstance(SessionFactory.class.getClassLoader(), new Class[]{Session.class},
                 (proxy, method, args1) -> method.invoke(sessionFactory.getCurrentSession(), args1));
         session.beginTransaction();
+        carRepository = new CarRepository(session);
+        userRepository = new UserRepository(session);
+        reviewRepository = new ReviewRepository(session);
     }
 
     @AfterEach
     void afterEnding() {
-        if (session != null) {
-            session.getTransaction().rollback();
-            session.close();
+        if (sessionFactory.getCurrentSession() != null) {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
+            sessionFactory.getCurrentSession().close();
         }
     }
 
@@ -70,20 +73,19 @@ public class CarTestIT {
     void saveCarSuccessfully() {
         Car car1 = getCar1();
 
-        Car saveCar= carRepository.save(car1);
+        Car saveCar = carRepository.save(car1);
 
-        session.flush();
-        session.clear();
-
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
         assertNotNull(saveCar);
     }
-
+//
     @Test
     void findCarIdSuccessfully() {
         Car car1 = getCar1();
         carRepository.save(car1);
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
 
         Optional<Car> foundedCar = carRepository.findById(car1.getId());
 
@@ -95,13 +97,13 @@ public class CarTestIT {
     void deleteCarSuccessfully() {
         Car car1 = getCar1();
         carRepository.save(car1);
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
 
         carRepository.delete(car1);
 
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
         Optional<Car> deletedCar = carRepository.findById(car1.getId());
         assertEquals(deletedCar.isEmpty(), true);
     }
@@ -110,14 +112,14 @@ public class CarTestIT {
     void updateCarSuccessfully() {
         Car car1 = getCar1();
         carRepository.save(car1);
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
         car1.setYear(2019);
 
         carRepository.update(car1);
 
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
         Optional<Car> updatedCar = carRepository.findById(car1.getId());
         assertEquals(2019, updatedCar.get().getYear());
 
@@ -129,8 +131,8 @@ public class CarTestIT {
         Car car2 = getCar2();
         carRepository.save(car1);
         carRepository.save(car2);
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
 
         List<Car> actualListAllCar = carRepository.findAll();
 
@@ -148,17 +150,17 @@ public class CarTestIT {
         carRepository.save(car1);
         carRepository.save(car2);
         carRepository.save(car3);
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
         CarFilter carFilter = CarFilter.builder()
                 .brand("BMW")
                 .year(2020)
                 .build();
-        var expectedCarModel1 = session.get(Car.class, car1.getId()).getModel();
-        var expectedCarModel3 = session.get(Car.class, car3.getId()).getModel();
+        var expectedCarModel1 = sessionFactory.getCurrentSession().get(Car.class, car1.getId()).getModel();
+        var expectedCarModel3 = sessionFactory.getCurrentSession().get(Car.class, car3.getId()).getModel();
         List<String> expectedCarModel = Arrays.asList(expectedCarModel1, expectedCarModel3);
 
-        var actualCarModel = carRepository.findCarModelByFilter(session, carFilter);
+        var actualCarModel = carRepository.findCarModelByFilter(sessionFactory.getCurrentSession(), carFilter);
 
         assertThat(actualCarModel)
                 .hasSize(2)
@@ -181,21 +183,21 @@ public class CarTestIT {
         car1.addReviews(review2);
         car3.addReviews(review3);
         userRepository.save(user1);
-        session.flush();
+        sessionFactory.getCurrentSession().flush();
         carRepository.save(car1);
         carRepository.save(car2);
         carRepository.save(car3);
         reviewRepository.save(review1);
         reviewRepository.save(review2);
         reviewRepository.save(review3);
-        session.flush();
-        session.clear();
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
         CarReviewsFilter carReviewsFilter = CarReviewsFilter.builder()
                 .brand("BMW")
                 .model("X7")
                 .build();
 
-        var actualCarModel = carRepository.findReviewsByBrandAndModelCar(session, carReviewsFilter);
+        var actualCarModel = carRepository.findReviewsByFilter(sessionFactory.getCurrentSession(), carReviewsFilter);
 
         assertThat(actualCarModel)
                 .hasSize(3)

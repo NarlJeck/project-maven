@@ -41,7 +41,7 @@ public class CarRepository extends BaseRepository<Integer, Car>{
                 .fetch();
     }
 
-    public List<String> findReviewsByBrandAndModelCar(Session session, CarReviewsFilter filter) {
+    public List<String> findReviewsByFilter(Session session, CarReviewsFilter filter) {
         var cb = session.getCriteriaBuilder();
         var criteria = cb.createQuery(String.class);
         var reviews = criteria.from(Review.class);

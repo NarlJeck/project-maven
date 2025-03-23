@@ -39,7 +39,6 @@ public class HibernateRunner {
             carRepository.save(build);
             session.getTransaction().commit();
         }
-
     }
 }
 
