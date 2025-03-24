@@ -4,9 +4,11 @@ import com.narel.util.HibernateUtil;
 import lombok.experimental.UtilityClass;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 import org.testcontainers.containers.PostgreSQLContainer;
 //import org.testcontainers.containers.PostgreSQLContainer;
 
+@Component
 @UtilityClass
 public class HibernateTestUtil {
 

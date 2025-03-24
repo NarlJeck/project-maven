@@ -2,17 +2,23 @@ package com.narel.repository;
 
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @RequiredArgsConstructor
 public abstract class BaseRepository<K extends Serializable, E> implements Repository<K, E> {
 
     private final Class<E> clazz;
-    private final EntityManager entityManager;
+
+    @Autowired
+    private  EntityManager entityManager;
 
     @Override
     public E save(E entity) {
