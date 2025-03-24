@@ -9,9 +9,16 @@ import com.narel.entity.Review;
 import com.narel.entity.Review_;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.graph.GraphSemantic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +26,14 @@ import java.util.List;
 import static com.narel.entity.Car_.model;
 import static com.narel.entity.QCar.car;
 
+@Repository
+@Transactional
 public class CarRepository extends BaseRepository<Integer, Car>{
 
-    public CarRepository(EntityManager entityManager) {
-        super(Car.class, entityManager);
+    public CarRepository() {
+        super(Car.class);
     }
+
     public List<String> findCarModelByFilter(Session session, CarFilter filter) {
         QPredicate builder = QPredicate.builder();
         builder

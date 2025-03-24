@@ -11,13 +11,18 @@ import com.narel.enums.Type;
 import com.narel.repository.CarRepository;
 import com.narel.repository.ReviewRepository;
 import com.narel.repository.UserRepository;
+import config.ApplicationTestConfiguration;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.context.internal.ThreadLocalSessionContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Import;
 import util.HibernateTestUtil;
 
 import java.lang.reflect.Proxy;
@@ -31,16 +36,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Import(ApplicationTestConfiguration.class)
 public class CarTestIT {
 
     private static SessionFactory sessionFactory;
-    private Session session;
     CarRepository carRepository;
     UserRepository userRepository;
     ReviewRepository reviewRepository;
 
     @BeforeAll
     static void setUp() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationTestConfiguration.class);
         sessionFactory = HibernateTestUtil.buildSessionFactory();
     }
 
@@ -56,9 +62,9 @@ public class CarTestIT {
         var session = (Session) Proxy.newProxyInstance(SessionFactory.class.getClassLoader(), new Class[]{Session.class},
                 (proxy, method, args1) -> method.invoke(sessionFactory.getCurrentSession(), args1));
         session.beginTransaction();
-        carRepository = new CarRepository(session);
-        userRepository = new UserRepository(session);
-        reviewRepository = new ReviewRepository(session);
+        carRepository = new CarRepository();
+        userRepository = new UserRepository();
+        reviewRepository = new ReviewRepository();
     }
 
     @AfterEach
