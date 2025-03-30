@@ -9,11 +9,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class ApplicationRunner {
 
-
     public static void main(String[] args) {
-
         try (var context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class)) {
-
             CarRepository bean = context.getBean(CarRepository.class);
             System.out.println(bean.save(Car.builder()
                     .year(2020)
@@ -28,7 +25,6 @@ public class ApplicationRunner {
                     .fuelType("Diesel")
                     .engineCapacity(3.0)
                     .build()));
-
         }
     }
 }

@@ -2,27 +2,26 @@ package com.narel.config;
 
 import com.narel.util.HibernateUtil;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+
+import java.lang.reflect.Proxy;
 
 @Configuration
-@PropertySource("classpath:application.yaml")
 @ComponentScan(basePackages = "com.narel")
 public class ApplicationConfiguration {
 
-    @Bean
-    public EntityManager entityManager(EntityManagerFactory entityManagerFactory){
-        return entityManagerFactory.createEntityManager();
-    }
-
-    @Bean
-    public SessionFactory hibernateUtil(){
-
+    @Bean(destroyMethod = "close")
+    public SessionFactory sessionFactory() {
         return HibernateUtil.buildSessionFactory();
     }
 
+    @Bean
+    public EntityManager entityManager() {
+        return (EntityManager) Proxy.newProxyInstance(SessionFactory.class.getClassLoader(), new Class[]{EntityManager.class},
+                (proxy, method, args1) -> method.invoke(sessionFactory().getCurrentSession(), args1));
+    }
 }
+
