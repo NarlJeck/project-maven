@@ -1,4 +1,4 @@
-package com.narel.enums;
+package com.narel.spring.enums;
 
 public enum Role {
     ADMIN,

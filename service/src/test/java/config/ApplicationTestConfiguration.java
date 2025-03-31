@@ -1,18 +1,12 @@
 package config;
 
-import com.narel.config.ApplicationConfiguration;
-import org.hibernate.SessionFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import util.HibernateTestUtil;
+import org.postgresql.jdbc2.optional.ConnectionPool;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-@Configuration
-@Import(ApplicationConfiguration.class)
+@TestConfiguration
 public class ApplicationTestConfiguration {
 
-    @Bean(destroyMethod = "close")
-    public SessionFactory sessionFactory() {
-        return HibernateTestUtil.buildSessionFactory();
-    }
+    @MockitoSpyBean(name = "pool1")
+    private ConnectionPool pool1;
 }

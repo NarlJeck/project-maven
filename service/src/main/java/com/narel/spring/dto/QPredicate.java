@@ -1,4 +1,4 @@
-package com.narel.dto;
+package com.narel.spring.dto;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;

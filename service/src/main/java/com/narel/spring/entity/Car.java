@@ -1,7 +1,7 @@
-package com.narel.entity;
+package com.narel.spring.entity;
 
-import com.narel.enums.CarStatus;
-import com.narel.enums.Type;
+import com.narel.spring.enums.CarStatus;
+import com.narel.spring.enums.Type;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
