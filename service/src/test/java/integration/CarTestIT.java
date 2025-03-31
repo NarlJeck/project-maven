@@ -1,69 +1,45 @@
 package integration;
 
-import com.narel.dto.CarFilter;
-import com.narel.entity.Car;
-import com.narel.entity.Review;
-import com.narel.entity.User;
-import com.narel.enums.CarStatus;
-import com.narel.enums.Role;
-import com.narel.enums.Type;
-import com.narel.repository.CarRepository;
-import com.narel.repository.ReviewRepository;
-import com.narel.repository.UserRepository;
-import config.ApplicationTestConfiguration;
-import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import annotation.IT;
+import com.narel.spring.dto.CarFilter;
+import com.narel.spring.entity.Car;
+import com.narel.spring.entity.Review;
+import com.narel.spring.entity.User;
+import com.narel.spring.enums.CarStatus;
+import com.narel.spring.enums.Role;
+import com.narel.spring.enums.Type;
+import com.narel.spring.repository.CarRepository;
+import com.narel.spring.repository.ReviewRepository;
+import com.narel.spring.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.A;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@IT
+@RequiredArgsConstructor
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@Transactional
+
 public class CarTestIT {
-    private final static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationTestConfiguration.class);
 
-    private static EntityManager entityManager = context.getBean(EntityManager.class);
-    private CarRepository carRepository;
-    private UserRepository userRepository;
-    private ReviewRepository reviewRepository;
-
-    @BeforeAll
-    static void setUp() {
+    @DynamicPropertySource
+    static void dynamicProperties(DynamicPropertyRegistry registrar) {
     }
 
-    @AfterAll
-    static void tearDown() {
-        if (entityManager != null) {
-            entityManager.close();
-        }
-        context.close();
-    }
-
-    @BeforeEach
-    void beforeStart() {
-        entityManager.getTransaction().begin();
-        carRepository = context.getBean(CarRepository.class);
-        userRepository = context.getBean(UserRepository.class);
-        reviewRepository = context.getBean(ReviewRepository.class);
-    }
-
-    @AfterEach
-    void afterEnding() {
-        if (entityManager != null) {
-            entityManager.getTransaction().rollback();
-            entityManager.close();
-        }
-    }
+    private final CarRepository carRepository;
+    private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
 
     @Test
     void saveCarSuccessfully() {
@@ -78,8 +54,6 @@ public class CarTestIT {
     void findCarIdSuccessfully() {
         Car car1 = getCar1();
         carRepository.save(car1);
-        entityManager.flush();
-        entityManager.clear();
 
         Optional<Car> foundedCar = carRepository.findById(car1.getId());
 
@@ -90,13 +64,9 @@ public class CarTestIT {
     void deleteCarSuccessfully() {
         Car car1 = getCar1();
         carRepository.save(car1);
-        entityManager.flush();
-        entityManager.clear();
 
         carRepository.delete(car1);
 
-        entityManager.flush();
-        entityManager.clear();
         Optional<Car> deletedCar = carRepository.findById(car1.getId());
         assertEquals(deletedCar.isEmpty(), true);
     }
@@ -105,14 +75,10 @@ public class CarTestIT {
     void updateCarSuccessfully() {
         Car car1 = getCar1();
         carRepository.save(car1);
-        entityManager.flush();
-        entityManager.clear();
         car1.setYear(2019);
 
         carRepository.update(car1);
 
-        entityManager.flush();
-        entityManager.clear();
         Optional<Car> updatedCar = carRepository.findById(car1.getId());
         assertEquals(2019, updatedCar.get().getYear());
     }
@@ -123,8 +89,6 @@ public class CarTestIT {
         Car car2 = getCar2();
         carRepository.save(car1);
         carRepository.save(car2);
-        entityManager.flush();
-        entityManager.clear();
 
         List<Car> actualListAllCar = carRepository.findAll();
 
@@ -141,8 +105,6 @@ public class CarTestIT {
         carRepository.save(car1);
         carRepository.save(car2);
         carRepository.save(car3);
-        entityManager.flush();
-        entityManager.clear();
         CarFilter carFilter = CarFilter.builder()
                 .brand("BMW")
                 .year(2020)
@@ -244,5 +206,4 @@ public class CarTestIT {
                 .password("4gd3O04@gK")
                 .build();
     }
-
 }

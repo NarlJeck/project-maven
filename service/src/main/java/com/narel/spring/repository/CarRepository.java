@@ -1,16 +1,14 @@
-package com.narel.repository;
+package com.narel.spring.repository;
 
-import com.narel.dto.CarFilter;
-import com.narel.dto.CarReviewsFilter;
-import com.narel.dto.CriteriaPredicate;
-import com.narel.dto.QPredicate;
-import com.narel.entity.Car;
+import com.narel.spring.dto.CarFilter;
+import com.narel.spring.dto.QPredicate;
+import com.narel.spring.entity.Car;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.narel.entity.QCar.car;
+import static com.narel.spring.entity.QCar.car;
 
 @Repository
 public class CarRepository extends BaseRepository<Integer, Car> {

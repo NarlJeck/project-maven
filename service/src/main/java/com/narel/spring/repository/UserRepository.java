@@ -1,7 +1,6 @@
-package com.narel.repository;
+package com.narel.spring.repository;
 
-import com.narel.entity.User;
-import jakarta.persistence.EntityManager;
+import com.narel.spring.entity.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

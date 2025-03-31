@@ -1,4 +1,4 @@
-package com.narel.entity;
+package com.narel.spring.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

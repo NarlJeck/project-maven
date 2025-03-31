@@ -1,7 +1,6 @@
-package com.narel.repository;
+package com.narel.spring.repository;
 
-import com.narel.entity.OrderRental;
-import jakarta.persistence.EntityManager;
+import com.narel.spring.entity.OrderRental;
 import org.springframework.stereotype.Repository;
 
 @Repository

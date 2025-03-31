@@ -1,8 +1,6 @@
-package com.narel.repository;
+package com.narel.spring.repository;
 
-import com.narel.entity.Review;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
+import com.narel.spring.entity.Review;
 import org.springframework.stereotype.Repository;
 
 @Repository

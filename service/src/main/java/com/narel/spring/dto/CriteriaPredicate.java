@@ -1,4 +1,4 @@
-package com.narel.dto;
+package com.narel.spring.dto;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
