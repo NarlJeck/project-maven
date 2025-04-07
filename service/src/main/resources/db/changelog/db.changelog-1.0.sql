@@ -1,3 +1,6 @@
+--liquibase formatted sql
+
+--changeset narel:1
 CREATE TABLE users
 (
     id                  SERIAL PRIMARY KEY,
@@ -10,9 +13,9 @@ CREATE TABLE users
     driver_license      VARCHAR(128) NOT NULL UNIQUE,
     bank_card           VARCHAR(128),
     password            VARCHAR(32)  NOT NULL
-
 );
 
+--changeset narel:2
 CREATE TABLE car
 (
     id                   SERIAL PRIMARY KEY,
@@ -29,6 +32,8 @@ CREATE TABLE car
     engine_capacity      DECIMAL
 
 );
+
+--changeset narel:3
 CREATE TABLE review
 (
     id          SERIAL PRIMARY KEY,
@@ -39,6 +44,7 @@ CREATE TABLE review
     created_at  TIMESTAMP DEFAULT current_timestamp
 );
 
+--changeset narel:4
 CREATE TABLE order_rental
 (
     id                SERIAL PRIMARY KEY,

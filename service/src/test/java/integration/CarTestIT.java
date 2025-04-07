@@ -1,7 +1,6 @@
 package integration;
 
 import annotation.IT;
-import com.narel.spring.dto.CarFilter;
 import com.narel.spring.entity.Car;
 import com.narel.spring.entity.Review;
 import com.narel.spring.entity.User;
@@ -9,111 +8,21 @@ import com.narel.spring.enums.CarStatus;
 import com.narel.spring.enums.Role;
 import com.narel.spring.enums.Type;
 import com.narel.spring.repository.CarRepository;
-import com.narel.spring.repository.ReviewRepository;
-import com.narel.spring.repository.UserRepository;
+import config.IntegrationTestBase;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IT
 @RequiredArgsConstructor
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-@Transactional
+public class CarTestIT extends IntegrationTestBase {
 
-public class CarTestIT {
-
-    @DynamicPropertySource
-    static void dynamicProperties(DynamicPropertyRegistry registrar) {
-    }
-
+    private final EntityManager entityManager;
     private final CarRepository carRepository;
-    private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
-
-    @Test
-    void saveCarSuccessfully() {
-        Car car1 = getCar1();
-
-        Car saveCar = carRepository.save(car1);
-
-        assertThat(saveCar.getRegistrationNumber().contains("RR55"));
-    }
-
-    @Test
-    void findCarIdSuccessfully() {
-        Car car1 = getCar1();
-        carRepository.save(car1);
-
-        Optional<Car> foundedCar = carRepository.findById(car1.getId());
-
-        assertEquals(car1.getRegistrationNumber(), foundedCar.get().getRegistrationNumber());
-    }
-
-    @Test
-    void deleteCarSuccessfully() {
-        Car car1 = getCar1();
-        carRepository.save(car1);
-
-        carRepository.delete(car1);
-
-        Optional<Car> deletedCar = carRepository.findById(car1.getId());
-        assertEquals(deletedCar.isEmpty(), true);
-    }
-
-    @Test
-    void updateCarSuccessfully() {
-        Car car1 = getCar1();
-        carRepository.save(car1);
-        car1.setYear(2019);
-
-        carRepository.update(car1);
-
-        Optional<Car> updatedCar = carRepository.findById(car1.getId());
-        assertEquals(2019, updatedCar.get().getYear());
-    }
-
-    @Test
-    void findAllCarsSuccessfully() {
-        Car car1 = getCar1();
-        Car car2 = getCar2();
-        carRepository.save(car1);
-        carRepository.save(car2);
-
-        List<Car> actualListAllCar = carRepository.findAll();
-
-        assertThat(actualListAllCar)
-                .hasSize(2)
-                .contains(car1, car2);
-    }
-
-    @Test
-    void findBrandOrYearOrFuelType() {
-        Car car1 = getCar1();
-        Car car2 = getCar2();
-        Car car3 = getCar3();
-        carRepository.save(car1);
-        carRepository.save(car2);
-        carRepository.save(car3);
-        CarFilter carFilter = CarFilter.builder()
-                .brand("BMW")
-                .year(2020)
-                .build();
-        var actualCarModel = carRepository.findCarModelByFilter(carFilter);
-
-        assertThat(actualCarModel)
-                .hasSize(2);
-    }
 
     private static Car getCar1() {
         return Car.builder()

@@ -1,12 +1,7 @@
 package com.narel.spring.repository;
 
 import com.narel.spring.entity.OrderRental;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
-@Repository
-public class OrderRentalRepository extends BaseRepository<Integer, OrderRental> {
-
-    public OrderRentalRepository() {
-        super(OrderRental.class);
-    }
+public interface OrderRentalRepository extends Repository<OrderRental, Integer> {
 }

@@ -1,12 +1,7 @@
 package com.narel.spring.repository;
 
 import com.narel.spring.entity.Review;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
-@Repository
-public class ReviewRepository extends BaseRepository<Integer, Review> {
-
-    public ReviewRepository() {
-        super(Review.class);
-    }
+public interface ReviewRepository extends Repository<Review, Integer> {
 }
