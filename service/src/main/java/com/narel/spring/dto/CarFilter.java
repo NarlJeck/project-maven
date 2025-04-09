@@ -1,4 +1,4 @@
-package com.narel.dto;
+package com.narel.spring.dto;
 
 import lombok.Builder;
 import lombok.Value;

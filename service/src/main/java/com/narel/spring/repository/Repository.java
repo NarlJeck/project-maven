@@ -1,4 +1,4 @@
-package com.narel.repository;
+package com.narel.spring.repository;
 
 import java.io.Serializable;
 import java.util.List;

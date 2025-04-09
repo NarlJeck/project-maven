@@ -1,6 +1,6 @@
-package com.narel.entity;
+package com.narel.spring.entity;
 
-import com.narel.enums.OrderStatus;
+import com.narel.spring.enums.OrderStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

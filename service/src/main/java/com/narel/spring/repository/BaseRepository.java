@@ -1,4 +1,4 @@
-package com.narel.repository;
+package com.narel.spring.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ public abstract class BaseRepository<K extends Serializable, E> implements Repos
 
     private final Class<E> clazz;
 
-    @Autowired
     private EntityManager entityManager;
 
     @Override
