@@ -1,6 +1,5 @@
 package integration;
 
-import annotation.IT;
 import com.narel.spring.entity.Car;
 import com.narel.spring.entity.Review;
 import com.narel.spring.entity.User;
@@ -8,19 +7,29 @@ import com.narel.spring.enums.CarStatus;
 import com.narel.spring.enums.Role;
 import com.narel.spring.enums.Type;
 import com.narel.spring.repository.CarRepository;
-import config.IntegrationTestBase;
+import com.narel.spring.annotation.config.IntegrationTestBase;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-@IT
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RequiredArgsConstructor
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 public class CarTestIT extends IntegrationTestBase {
 
+    @Test
+    void saveCarSuccessfully() {
+        Car car1 = getCar1();
+
+        Car saveCar = carRepository.save(car1);
+
+        assertThat(saveCar.getRegistrationNumber().contains("RR55"));
+    }
     private final EntityManager entityManager;
     private final CarRepository carRepository;
 

@@ -14,6 +14,7 @@ CREATE TABLE users
     bank_card           VARCHAR(128),
     password            VARCHAR(32)  NOT NULL
 );
+--rollback DROP TABLE users;
 
 --changeset narel:2
 CREATE TABLE car
@@ -30,8 +31,8 @@ CREATE TABLE car
     equipment            VARCHAR(128),
     fuel_type            VARCHAR(128),
     engine_capacity      DECIMAL
-
 );
+--rollback DROP TABLE car;
 
 --changeset narel:3
 CREATE TABLE review
@@ -43,6 +44,7 @@ CREATE TABLE review
     rating      INT CHECK (rating >= 1 AND rating <= 5),
     created_at  TIMESTAMP DEFAULT current_timestamp
 );
+--rollback DROP TABLE review;
 
 --changeset narel:4
 CREATE TABLE order_rental
@@ -55,5 +57,6 @@ CREATE TABLE order_rental
     total_rental_cost DECIMAL,
     status            VARCHAR(50)
 );
+--rollback DROP TABLE order_rental;
 
 

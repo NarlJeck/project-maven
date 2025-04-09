@@ -1,4 +1,4 @@
-package annotation;
+package com.narel.spring.annotation;
 
 import com.narel.spring.ApplicationRunner;
 import jakarta.transaction.Transactional;

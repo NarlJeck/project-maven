@@ -1,6 +1,6 @@
-package config;
+package com.narel.spring.annotation.config;
 
-import annotation.IT;
+import com.narel.spring.annotation.IT;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
