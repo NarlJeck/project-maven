@@ -1,4 +1,4 @@
-package integration;
+package com.narel.spring.integration;
 
 import com.narel.spring.entity.Car;
 import com.narel.spring.entity.Review;
@@ -7,7 +7,7 @@ import com.narel.spring.enums.CarStatus;
 import com.narel.spring.enums.Role;
 import com.narel.spring.enums.Type;
 import com.narel.spring.repository.CarRepository;
-import com.narel.spring.annotation.config.IntegrationTestBase;
+import com.narel.spring.config.IntegrationTestBase;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;

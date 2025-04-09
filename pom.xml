@@ -78,41 +78,6 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.3.1</version>
                 </plugin>
-                <!--                <plugin>-->
-                <!--                    <artifactId>maven-compiler-plugin</artifactId>-->
-                <!--                    <version>3.13.0</version>-->
-                <!--                    <configuration>-->
-                <!--                        <annotationProcessors>-->
-                <!--                            <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor-->
-                <!--                            </annotationProcessor>-->
-                <!--                            <annotationProcessor>com.querydsl.apt.jpa.JPAAnnotationProcessor</annotationProcessor>-->
-                <!--                            <annotationProcessor>org.hibernate.processor.HibernateProcessor</annotationProcessor>-->
-                <!--                        </annotationProcessors>-->
-                <!--                        <annotationProcessorPaths>-->
-                <!--                            <path>-->
-                <!--                                <groupId>org.projectlombok</groupId>-->
-                <!--                                <artifactId>lombok</artifactId>-->
-                <!--                                <version>${lombok.version}</version>-->
-                <!--                            </path>-->
-                <!--                            <path>-->
-                <!--                                <groupId>com.querydsl</groupId>-->
-                <!--                                <artifactId>querydsl-apt</artifactId>-->
-                <!--                                <version>5.1.0</version>-->
-                <!--                                <classifier>jakarta</classifier>-->
-                <!--                            </path>-->
-                <!--                            <path>-->
-                <!--                                <groupId>org.hibernate.orm</groupId>-->
-                <!--                                <artifactId>hibernate-jpamodelgen</artifactId>-->
-                <!--                                <version>${hibernate.version}</version>-->
-                <!--                            </path>-->
-                <!--                            <path>-->
-                <!--                                <groupId>jakarta.persistence</groupId>-->
-                <!--                                <artifactId>jakarta.persistence-api</artifactId>-->
-                <!--                                <version>3.1.0</version>-->
-                <!--                            </path>-->
-                <!--                        </annotationProcessorPaths>-->
-                <!--                    </configuration>-->
-                <!--                </plugin>-->
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.3.0</version>
