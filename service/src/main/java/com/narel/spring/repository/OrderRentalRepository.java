@@ -1,7 +1,7 @@
 package com.narel.spring.repository;
 
 import com.narel.spring.entity.OrderRental;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRentalRepository extends CrudRepository<OrderRental, Integer> {
+public interface OrderRentalRepository extends JpaRepository<OrderRental, Integer> {
 }

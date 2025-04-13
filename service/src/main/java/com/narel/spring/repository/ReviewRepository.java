@@ -1,7 +1,7 @@
 package com.narel.spring.repository;
 
 import com.narel.spring.entity.Review;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReviewRepository extends CrudRepository<Review, Integer> {
+public interface ReviewRepository extends JpaRepository<Review, Integer> {
 }

@@ -9,6 +9,9 @@ logging:
     name: dmdev.log
     path: /
 spring:
+  mvc:
+    format:
+      date: iso
   datasource:
     url: jdbc:postgresql://localhost:5433/postgres
     username: postgres
@@ -18,3 +21,4 @@ spring:
     properties.hibernate:
       show_sql: true
       format_sql: true
+    open-in-view: false
