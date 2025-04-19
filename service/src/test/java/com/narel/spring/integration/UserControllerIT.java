@@ -6,10 +6,14 @@ import com.narel.spring.dto.UserReadDto;
 import com.narel.spring.enums.Role;
 import com.narel.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.assertj.core.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Optional;
 
 import static com.narel.spring.dto.UserCreateEditDto.Fields.bankCard;
 import static com.narel.spring.dto.UserCreateEditDto.Fields.driverLicense;
@@ -20,6 +24,10 @@ import static com.narel.spring.dto.UserCreateEditDto.Fields.password;
 import static com.narel.spring.dto.UserCreateEditDto.Fields.phoneNumber;
 import static com.narel.spring.dto.UserCreateEditDto.Fields.residentialAddress;
 import static com.narel.spring.dto.UserCreateEditDto.Fields.role;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -51,17 +59,20 @@ public class UserControllerIT extends IntegrationTestBase {
                 )
                 .andExpectAll(
                         status().is3xxRedirection(),
-                        redirectedUrlPattern("/users/{\\d+}")
-                );
+                        redirectedUrlPattern("/users/{\\d+}"));
+        Optional<UserReadDto> savedUser = userService.findById(1);
+        Assertions.assertThat(savedUser.get().getFullName()).isEqualTo("Marty McFlay");
     }
 
     @Test
     void findAllSuccessful() throws Exception {
+        getUserReadDto();
         mockMvc.perform(get("/users"))
-
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("user/users"))
-                .andExpect(model().attributeExists("users"));
+                .andExpect(model().attributeExists("users"))
+                .andExpect(model().attribute("users", hasSize(Matchers.greaterThan(0))))
+                .andExpect(model().attribute("users", hasItem(hasProperty("id", notNullValue()))));
     }
 
     @Test

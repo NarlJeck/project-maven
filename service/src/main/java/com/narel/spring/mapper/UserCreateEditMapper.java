@@ -31,5 +31,4 @@ public class UserCreateEditMapper implements Mapper<UserCreateEditDto, User> {
         user.setBankCard(object.getBankCard());
         user.setPassword(object.getPassword());
     }
-
 }
