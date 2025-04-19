@@ -1,4 +1,4 @@
-package com.narel.spring.annotation.config;
+package com.narel.spring.config;
 
 import com.narel.spring.annotation.IT;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset narel:1
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     id                  SERIAL PRIMARY KEY,
     full_name           VARCHAR(128) NOT NULL UNIQUE,
@@ -17,7 +17,7 @@ CREATE TABLE users
 --rollback DROP TABLE users;
 
 --changeset narel:2
-CREATE TABLE car
+CREATE TABLE IF NOT EXISTS car
 (
     id                   SERIAL PRIMARY KEY,
     year                 INT     NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE car
 --rollback DROP TABLE car;
 
 --changeset narel:3
-CREATE TABLE review
+CREATE TABLE IF NOT EXISTS review
 (
     id          SERIAL PRIMARY KEY,
     user_id     INT REFERENCES users (id) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE review
 --rollback DROP TABLE review;
 
 --changeset narel:4
-CREATE TABLE order_rental
+CREATE TABLE IF NOT EXISTS order_rental
 (
     id                SERIAL PRIMARY KEY,
     user_id           INT REFERENCES users (id) NOT NULL,
