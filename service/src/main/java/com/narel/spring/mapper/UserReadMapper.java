@@ -2,9 +2,11 @@ package com.narel.spring.mapper;
 
 import com.narel.spring.dto.UserReadDto;
 import com.narel.spring.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UserReadMapper implements Mapper<User, UserReadDto> {
 
     @Override
@@ -18,7 +20,7 @@ public class UserReadMapper implements Mapper<User, UserReadDto> {
                 object.getRole(),
                 object.getPassport(),
                 object.getDriverLicense(),
-                object.getBankCard(),
-                object.getPassword());
+                object.getBankCard());
+//                object.getPassword());
     }
 }
