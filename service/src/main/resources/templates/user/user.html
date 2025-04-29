@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<form th:action="@{/templates/user/{userId}/update(userId=${user.id})}" method="post">
+    <label for="fullName">Username:
+        <input id="fullName" type="text" name="fullName" th:value="${user.fullName}">
+    </label><br>
+</form>
+</body>
+</html>

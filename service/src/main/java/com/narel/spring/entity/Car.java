@@ -19,6 +19,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class Car {
     private String image;
 
     @Column(name = "rental_price_per_day")
-    private Double rentalPrice;
+    private BigDecimal rentalPrice;
 
     private String registrationNumber;
 
