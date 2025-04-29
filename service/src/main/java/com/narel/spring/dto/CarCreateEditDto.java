@@ -5,6 +5,8 @@ import com.narel.spring.enums.Type;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @Value
@@ -13,7 +15,7 @@ public class CarCreateEditDto {
 
     Integer year;
     String image;
-    Double rentalPrice;
+    BigDecimal rentalPrice;
     String registrationNumber;
     String brand;
     String model;

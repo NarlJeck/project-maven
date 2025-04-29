@@ -27,11 +27,11 @@ public class CarService {
     private final CarReadMapper carReadMapper;
     private final CarCreateEditMapper carCreateEditMapper;
 
-    public List<CarReadDto> findAll() {
-        return carRepository.findAll().stream()
-                .map(carReadMapper::map)
-                .toList();
-    }
+//    public List<CarReadDto> findAll() {
+//        return carRepository.findAll().stream()
+//                .map(carReadMapper::map)
+//                .toList();
+//    }
 
     public Page<CarReadDto> findAll(CarFilter filter, Pageable pageable) {
         var predicate = QPredicate.builder()
@@ -47,7 +47,7 @@ public class CarService {
 
     }
 
-    Optional<CarReadDto> findById(Integer id) {
+    public Optional<CarReadDto> findById(Integer id) {
         return carRepository.findById(id)
                 .map(carReadMapper::map);
     }

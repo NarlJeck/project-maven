@@ -22,7 +22,6 @@ public class CarCreateEditMapper implements Mapper<CarCreateEditDto, Car> {
     }
 
     private static void copy(CarCreateEditDto object, Car car) {
-
         car.setYear(object.getYear());
         car.setImage(object.getImage());
         car.setRentalPrice(object.getRentalPrice());

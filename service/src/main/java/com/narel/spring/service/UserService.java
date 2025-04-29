@@ -40,7 +40,6 @@ public class UserService {
                 .buildAnd();
         return userRepository.findAll(predicate,pageable)
                 .map(userReadMapper::map);
-
     }
 
     public Optional<UserReadDto> findById(Integer id) {

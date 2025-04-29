@@ -20,14 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CarController {
 
     private final CarService carService;
-    private final CarRepository carRepository;
 
     @GetMapping
     public String findAll(Model model, CarFilter filter, Pageable pageable) {
         Page<CarReadDto> page = carService.findAll(filter, pageable);
         model.addAttribute("cars", PageResponse.of(page));
         model.addAttribute("filter", filter);
-        model.addAttribute("carsAll", carService.findAll());
         return "car/cars";
     }
 }

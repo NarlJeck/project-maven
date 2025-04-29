@@ -96,7 +96,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Transactional
     void creatUserSuccessfulAndReturnUser() {
         UserCreateEditDto userCreateEditDto = getUserCreateEditDto();
         User newUser = new User();
@@ -126,7 +125,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Transactional
     void updateUserSuccessfulWhenUserExists() {
         Integer userId = 1;
         UserCreateEditDto editDto = getUserCreateEditDtoTwo();
@@ -162,7 +160,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Transactional
     void deleteUserReturnTrueSuccessful() {
         Integer userId = 1;
         User user = new User();
@@ -177,7 +174,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Transactional
     void deleteWhenUserNotExistsReturnFalse() {
         Integer userId = 999999999;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
