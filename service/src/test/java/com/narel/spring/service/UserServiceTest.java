@@ -17,6 +17,7 @@ import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
@@ -51,8 +52,8 @@ public class UserServiceTest {
         User user2 = new User();
         user2.setFullName("Jortn");
         List<User> users = List.of(user1, user2);
-        UserReadDto userReadDto1 = new UserReadDto(1, "Jon", 34, "3r", "Minsk", Role.USER, "3r", "34d", "35");
-        UserReadDto userReadDto2 = new UserReadDto(2, "Jortn", 345, "3r2", "Minsk fr", Role.USER, "3323r", "345d", "3578");
+        UserReadDto userReadDto1 = new UserReadDto(1, "Jon", 34, "3r", "Minsk", Role.USER, "3r", "34d", "35","333");
+        UserReadDto userReadDto2 = new UserReadDto(2, "Jortn", 345, "3r2", "Minsk fr", Role.USER, "3323r", "345d", "3578","222");
         when(userRepository.findAll()).thenReturn(users);
         when(userReadMapper.map(user1)).thenReturn(userReadDto1);
         when(userReadMapper.map(user2)).thenReturn(userReadDto2);
@@ -71,7 +72,7 @@ public class UserServiceTest {
     void findUserByIdWhenUserExists() {
         Integer userId = 1;
         User user1 = new User();
-        UserReadDto userReadDto1 = new UserReadDto(userId, "Jon", 34, "3r", "Minsk", Role.USER, "3r", "34d", "35");
+        UserReadDto userReadDto1 = new UserReadDto(userId, "Jon", 34, "3r", "Minsk", Role.USER, "3r", "34d", "35","322");
         when(userRepository.findById(userId)).thenReturn(Optional.of(user1));
         when(userReadMapper.map(user1)).thenReturn(userReadDto1);
 
@@ -111,7 +112,8 @@ public class UserServiceTest {
                 Role.USER,
                 "bm2344",
                 "fr3535",
-                "2353 3553 3253 2353");
+                "2353 3553 3253 2353",
+                "111");
         when(userCreateEditMapper.map(userCreateEditDto)).thenReturn(newUser);
         when(userRepository.save(newUser)).thenReturn(savedUser);
         when(userReadMapper.map(savedUser)).thenReturn(expectedDto);
@@ -142,7 +144,7 @@ public class UserServiceTest {
                 Role.USER,
                 "bm2344",
                 "fr3535",
-                "2353 3553 3253 2353");
+                "2353 3553 3253 2353","233");
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userCreateEditMapper.map(editDto,
                 existingUser)).thenReturn(editUser);
@@ -191,7 +193,6 @@ public class UserServiceTest {
                 8954852,
                 "moonStation@gmail.com",
                 "Tatuin",
-                Role.USER,
                 "bm2344",
                 "fr3535",
                 "2353 3553 3253 2353",
@@ -205,7 +206,6 @@ public class UserServiceTest {
                 8954852,
                 "MillenniumFalcon@gmail.com",
                 "Tatuin",
-                Role.USER,
                 "bm2344",
                 "fr3535",
                 "2353 3553 3253 2353",

@@ -10,7 +10,6 @@ public class CarCreateEditMapper implements Mapper<CarCreateEditDto, Car> {
     @Override
     public Car map(CarCreateEditDto fromObject, Car toObject) {
         copy(fromObject, toObject);
-
         return toObject;
     }
 

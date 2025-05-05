@@ -2,10 +2,18 @@ package com.narel.spring.mapper;
 
 import com.narel.spring.dto.UserCreateEditDto;
 import com.narel.spring.entity.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class UserCreateEditMapper implements Mapper<UserCreateEditDto, User> {
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User map(UserCreateEditDto fromObject, User toObject) {
@@ -20,7 +28,7 @@ public class UserCreateEditMapper implements Mapper<UserCreateEditDto, User> {
         return user;
     }
 
-    private static void copy(UserCreateEditDto object, User user) {
+    private  void copy(UserCreateEditDto object, User user) {
         user.setFullName(object.getFullName());
         user.setPhoneNumber(object.getPhoneNumber());
         user.setEmail(object.getEmail());
@@ -30,5 +38,10 @@ public class UserCreateEditMapper implements Mapper<UserCreateEditDto, User> {
         user.setDriverLicense(object.getDriverLicense());
         user.setBankCard(object.getBankCard());
         user.setPassword(object.getPassword());
+
+        Optional.ofNullable(object.getPassword())
+                .filter(StringUtils::hasText)
+                .map(passwordEncoder::encode)
+                .ifPresent(user::setPassword);
     }
 }

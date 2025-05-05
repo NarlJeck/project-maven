@@ -1,11 +1,14 @@
-package com.narel.spring.controller;
+package com.narel.spring.http.controller;
 
 import com.narel.spring.dto.UserCreateEditDto;
+import com.narel.spring.dto.UserReadDto;
 import com.narel.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,14 +39,20 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-    public String create(@ModelAttribute UserCreateEditDto user) {
-        return "redirect:/users/" + userService.create(user).getId();
+    @GetMapping("/registration")
+    public String registrationPage(Model model, UserCreateEditDto userRegistration) {
+        model.addAttribute("userRegistration", userRegistration);
+        return "user/registration";
+    }
+
+    @PostMapping("/registration")
+    public String create(@ModelAttribute UserCreateEditDto userRegistration) {
+        UserReadDto createdUser = userService.create(userRegistration);
+        return "redirect:/users/" + createdUser.getId();
     }
 
     @PostMapping("/{id}/update")
-    public String update(@PathVariable("id") Integer id, @ModelAttribute UserCreateEditDto user) {
+    public String update(@PathVariable("id") Integer id, @Validated @ModelAttribute UserCreateEditDto user) {
         return userService.update(id, user)
                 .map(it -> "redirect:/users/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
