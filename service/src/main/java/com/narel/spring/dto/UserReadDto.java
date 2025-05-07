@@ -17,5 +17,4 @@ public class UserReadDto {
     String passport;
     String driverLicense;
     String bankCard;
-    String password;
 }

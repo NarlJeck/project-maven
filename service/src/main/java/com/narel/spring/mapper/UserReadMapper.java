@@ -20,7 +20,6 @@ public class UserReadMapper implements Mapper<User, UserReadDto> {
                 object.getRole(),
                 object.getPassport(),
                 object.getDriverLicense(),
-                object.getBankCard(),
-                object.getPassword());
+                object.getBankCard());
     }
 }

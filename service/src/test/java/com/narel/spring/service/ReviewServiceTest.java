@@ -59,8 +59,7 @@ public class ReviewServiceTest {
                 Role.USER,
                 "bm2344",
                 "fr3535",
-                "2353 3553 3253 2353",
-                "111");
+                "2353 3553 3253 2353");
         CarReadDto carReadDto = new CarReadDto(
                 1,
                 2002,
