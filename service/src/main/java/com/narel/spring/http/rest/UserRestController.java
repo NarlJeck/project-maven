@@ -1,4 +1,4 @@
-package com.narel.spring.controller.rest;
+package com.narel.spring.http.rest;
 
 import com.narel.spring.dto.PageResponse;
 import com.narel.spring.dto.UserCreateEditDto;

@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -43,7 +44,7 @@ public class OrderRental {
 
     private Instant rentalEndTime;
 
-    private Double totalRentalCost;
+    private BigDecimal totalRentalCost;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

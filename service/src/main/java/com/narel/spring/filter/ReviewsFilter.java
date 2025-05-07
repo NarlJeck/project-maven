@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class CarReviewsFilter {
+public class ReviewsFilter {
 
     String model;
     String brand;

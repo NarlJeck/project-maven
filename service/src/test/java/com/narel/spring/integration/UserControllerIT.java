@@ -3,7 +3,6 @@ package com.narel.spring.integration;
 import com.narel.spring.config.IntegrationTestBase;
 import com.narel.spring.dto.UserCreateEditDto;
 import com.narel.spring.dto.UserReadDto;
-import com.narel.spring.enums.Role;
 import com.narel.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -46,7 +45,7 @@ public class UserControllerIT extends IntegrationTestBase {
 
     @Test
     void createSuccessfulAndSuccessfulRedirect() throws Exception {
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/users/registration")
                         .param(fullName, "Marty McFlay")
                         .param(phoneNumber, "8935352")
                         .param(email, "martyFly@gmail.com")
@@ -121,6 +120,6 @@ public class UserControllerIT extends IntegrationTestBase {
     }
 
     private UserReadDto getUserReadDto() {
-        return userService.create(new UserCreateEditDto("Jeck", 244, "dg@.com", "efe", Role.ADMIN, "BM3435550", "3535", "35335", "e455"));
+        return userService.create(new UserCreateEditDto("Jeck", 244, "dg@.com", "efe", "BM3435550", "3535", "35335", "e455"));
     }
 }

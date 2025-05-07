@@ -5,13 +5,11 @@
     <title>Cars</title>
 </head>
 <body>
+<div th:insert="~{fragment::header}"> Logout </div>
 <form action="/cars">
-
-      <Label for="Brand">Brand:
-
+    <Label for="Brand">Brand:
         <input id="brand" type="text" name="brand" th:value="${filter.brand}">
     </label>
-
     <label for="fuelType">Fuel:
         <input id="fuelType" type="text" name="fuelType" th:value="${filter.fuelType}">
     </label>

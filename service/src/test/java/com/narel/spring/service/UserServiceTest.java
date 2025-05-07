@@ -17,6 +17,7 @@ import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
@@ -191,7 +192,6 @@ public class UserServiceTest {
                 8954852,
                 "moonStation@gmail.com",
                 "Tatuin",
-                Role.USER,
                 "bm2344",
                 "fr3535",
                 "2353 3553 3253 2353",
@@ -205,7 +205,6 @@ public class UserServiceTest {
                 8954852,
                 "MillenniumFalcon@gmail.com",
                 "Tatuin",
-                Role.USER,
                 "bm2344",
                 "fr3535",
                 "2353 3553 3253 2353",

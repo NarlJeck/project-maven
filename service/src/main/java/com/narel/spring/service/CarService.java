@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.narel.spring.entity.QCar.car;
@@ -27,12 +26,6 @@ public class CarService {
     private final CarReadMapper carReadMapper;
     private final CarCreateEditMapper carCreateEditMapper;
 
-//    public List<CarReadDto> findAll() {
-//        return carRepository.findAll().stream()
-//                .map(carReadMapper::map)
-//                .toList();
-//    }
-
     public Page<CarReadDto> findAll(CarFilter filter, Pageable pageable) {
         var predicate = QPredicate.builder()
                 .add(filter.getBrand(), car.brand::containsIgnoreCase)
@@ -42,9 +35,8 @@ public class CarService {
                 .add(filter.getRentalPrice(), car.rentalPrice::loe)
                 .add(filter.getEngineCapacity(), car.engineCapacity::eq)
                 .buildAnd();
-        return carRepository.findAll(predicate,pageable)
+        return carRepository.findAll(predicate, pageable)
                 .map(carReadMapper::map);
-
     }
 
     public Optional<CarReadDto> findById(Integer id) {

@@ -9,11 +9,10 @@ import java.time.Instant;
 
 @Value
 @FieldNameConstants
-public class OrderRentalReadDto {
+public class OrderRentalCreateDto {
 
-    Integer id;
-    UserReadDto user;
-    CarReadDto car;
+    Integer userId;
+    Integer carId;
     Instant rentalStartTime;
     Instant rentalEndTime;
     BigDecimal totalRentalCost;

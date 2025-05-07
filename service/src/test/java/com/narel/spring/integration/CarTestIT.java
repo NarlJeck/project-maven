@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -37,7 +38,7 @@ public class CarTestIT extends IntegrationTestBase {
         return Car.builder()
                 .year(2020)
                 .image("https://assets.avtocod.ru/storage/images/articles-2022/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu-0-min.jpg")
-                .rentalPrice(50.0)
+                .rentalPrice(BigDecimal.valueOf(50.0))
                 .registrationNumber("RR55")
                 .brand("BMW")
                 .model("X7")
@@ -53,7 +54,7 @@ public class CarTestIT extends IntegrationTestBase {
         return Car.builder()
                 .year(2020)
                 .image("https://assets.avtocod.ru/storage/images/articles-2022/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu-0-min.jpg")
-                .rentalPrice(50.0)
+                .rentalPrice(BigDecimal.valueOf(50.0))
                 .registrationNumber("RR56")
                 .brand("BMW")
                 .model("X7")
@@ -69,7 +70,7 @@ public class CarTestIT extends IntegrationTestBase {
         return Car.builder()
                 .year(2021)
                 .image("https://assets.avtocod.ru/storage/images/articles-2022/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu-0-min.jpg")
-                .rentalPrice(60.0)
+                .rentalPrice(BigDecimal.valueOf(60.0))
                 .registrationNumber("RR55")
                 .brand("AUDI")
                 .model("A6")

@@ -7,13 +7,16 @@ import com.narel.spring.filter.UserFilter;
 import com.narel.spring.mapper.UserCreateEditMapper;
 import com.narel.spring.mapper.UserReadMapper;
 import com.narel.spring.repository.UserRepository;
-import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +25,7 @@ import static com.narel.spring.entity.QUser.user;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserReadMapper userReadMapper;
@@ -34,11 +37,11 @@ public class UserService {
                 .toList();
     }
 
-    public Page<UserReadDto> findAll(UserFilter filter, Pageable pageable){
+    public Page<UserReadDto> findAll(UserFilter filter, Pageable pageable) {
         var predicate = QPredicate.builder()
                 .add(filter.getAddress(), user.residentialAddress::containsIgnoreCase)
                 .buildAnd();
-        return userRepository.findAll(predicate,pageable)
+        return userRepository.findAll(predicate, pageable)
                 .map(userReadMapper::map);
     }
 
@@ -73,5 +76,16 @@ public class UserService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getEmail(),
+                        user.getPassword(),
+                        Collections.singleton(user.getRole())
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
     }
 }
